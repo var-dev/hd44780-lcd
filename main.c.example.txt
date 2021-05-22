@@ -1,0 +1,24 @@
+#include "hd44780.h"
+int main(void)
+{
+
+  __HAL_RCC_GPIOE_CLK_ENABLE();
+  //RCC->AHB1ENR |= RCC_AHB1ENR_GPIOEEN;
+  LCDII_t lcd1 = {GPIOE, &HAL_Delay, 0};
+  LCDII_Init4(lcd1);
+  LCDII_Print(lcd1, "0x", 2, 0x40);
+  LCDII_SendCommand(lcd1, LCDII_CMD_ENT_MODE6);
+  LCDII_PrintN(lcd1, 65535, OCT, 6, 0x42);
+
+  char q[] = "qwertyuiopasdfgHJKL";
+
+  LCDII_Print(lcd1, q, 19, 0x1);
+  //LCDII_SendCommand(lcd1, LCDII_CMD_CR);
+  uint8_t a1 = LCDII_Read_BF_Addr(lcd1);
+  uint8_t a2 = LCDII_ReadData(lcd1);
+  a1 = LCDII_Read_BF_Addr(lcd1);
+  a2 = LCDII_ReadData(lcd1);
+
+  while (1){
+  }
+}
